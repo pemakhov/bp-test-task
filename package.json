@@ -1,0 +1,33 @@
+{
+  "name": "bp-test-task",
+  "version": "1.0.0",
+  "description": "BandaPixels test task",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pemakhov/bp-test-task.git"
+  },
+  "author": "Serhii Pemakhov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pemakhov/bp-test-task/issues"
+  },
+  "homepage": "https://github.com/pemakhov/bp-test-task#readme",
+  "dependencies": {
+    "express": "4.17.1"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.2.0",
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
