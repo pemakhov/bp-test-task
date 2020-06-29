@@ -4,7 +4,9 @@
   "description": "BandaPixels test task",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server/index.js",
+    "start:dev": "nodemon src/server/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,12 @@
   },
   "homepage": "https://github.com/pemakhov/bp-test-task#readme",
   "dependencies": {
-    "express": "4.17.1"
+    "@hapi/joi": "17.1.1",
+    "body-parser": "1.19.0",
+    "cookie-parser": "1.4.5",
+    "express": "4.17.1",
+    "jsonwebtoken": "8.5.1",
+    "mongoose": "5.9.20"
   },
   "devDependencies": {
     "cz-conventional-changelog": "^3.2.0",
