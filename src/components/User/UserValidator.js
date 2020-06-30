@@ -27,16 +27,6 @@ class UserValidator {
       .or('phone', 'email')
       .validate(profile);
   }
-
-  signIn(profile) {
-    return this.Joi.object({
-      id: this.Joi.string()
-        .required(),
-      password: this.Joi.string()
-        .required(),
-    })
-      .validate(profile);
-  }
 }
 
 module.exports = new UserValidator();

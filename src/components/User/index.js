@@ -1,8 +1,7 @@
-const jwt = require('jsonwebtoken');
 const UserService = require('./service');
 const UserValidator = require('./UserValidator');
 const ValidationError = require('../../errors/ValidationError');
-const AuthenticacionError = require('../../errors/AuthenticationError');
+const { decodeAccessToken } = require('../Auth/token');
 
 const findAll = async (req, res, next) => {
   try {
@@ -55,55 +54,24 @@ const create = async (req, res, next) => {
   }
 };
 
-const signIn = async (req, res, next) => {
+const getInfo = (req, res, next) => {
   try {
-    const { error } = UserValidator.signIn(req.body);
+    const authHeader = req.headers.authorization;
+    const refreshToken = authHeader && authHeader.split(' ')[1];
 
-    if (error) {
-      throw new ValidationError(error.details);
+    if (!refreshToken) {
+      return res.sendStatus(401);
     }
+    const user = decodeAccessToken(refreshToken);
 
-    const user = await UserService.findById(req.body.id);
-
-    if (!user.id || user.id !== req.body.id) {
-      throw new AuthenticacionError();
-    }
-
-    const payload = {
-      id: user.id,
-      id_type: user.id_type,
-      password: user.password,
-    };
-    console.log(process.env.ACCESS_TOKEN_SECRET);
-    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
-
-    return res.status(200).json({ accessToken });
+    res.status(200).send({ id: user.id, id_type: user.id_type });
   } catch (error) {
-    if (error instanceof ValidationError) {
-      return res.status(422).json({
-        message: error.name,
-        details: error.message,
-      });
-    }
-
-    if (error instanceof AuthenticacionError) {
-      return res.status(404).json({
-        message: error.name,
-        details: error.message,
-      });
-    }
-
-    res.status(500).json({
-      message: error.name,
-      details: error.message,
-    });
-
-    return next(error);
+    next(error);
   }
 };
 
 module.exports = {
   findAll,
   create,
-  signIn,
+  getInfo,
 };
