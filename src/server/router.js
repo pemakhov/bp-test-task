@@ -2,6 +2,7 @@ const { Router } = require('express');
 const http = require('http');
 const UserRouter = require('../components/User/router');
 const AuthRouter = require('../components/Auth/router');
+const ToolsRouter = require('../components/Tools/router');
 
 module.exports = {
   init(app) {
@@ -9,6 +10,7 @@ module.exports = {
 
     app.use('/', UserRouter);
     app.use('/', AuthRouter);
+    app.use('/', ToolsRouter);
 
     app.get('/', (req, res) => res.status(200).send('Hello BandaPixels'));
 
