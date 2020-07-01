@@ -1,3 +1,6 @@
+/**
+ * Class for instantiating authentication errors
+ */
 class AuthenticacionError extends Error {
   constructor() {
     super();

@@ -2,6 +2,11 @@ const AuthModel = require('./model');
 
 const TOKENS_NUMBER_TO_STORE = 4;
 
+/**
+ * Function saving a token
+ * @param {String} id
+ * @param {String} token
+ */
 const saveToken = async (id, token) => {
   const userTokens = await AuthModel.findOne({ id });
   if (!userTokens) {
@@ -14,10 +19,21 @@ const saveToken = async (id, token) => {
   return AuthModel.updateOne({ id }, { tokens: updatedTokens });
 };
 
+/**
+ * Function extructing all tokens owned by a user with passed 'id'
+ * @param {String} id
+ */
 const findTokens = (id) => AuthModel.findOne({ id });
 
+/**
+ * Function extrarcing all tokens
+ */
 const findAll = () => AuthModel.find({}).exec();
 
+/**
+ * Function deleting stored tokens
+ * @param {Object} target empty, or containing user id
+ */
 const deleteTokens = (target) => AuthModel.deleteMany(target);
 
 module.exports = {

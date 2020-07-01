@@ -1,6 +1,9 @@
 const { Schema } = require('mongoose');
 const connections = require('../../db/connection');
 
+/**
+ * The model for the token storage document
+ */
 const AuthSchema = new Schema(
   {
     id: {

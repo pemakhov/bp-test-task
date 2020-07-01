@@ -3,6 +3,13 @@ const UserValidator = require('./UserValidator');
 const ValidationError = require('../../errors/ValidationError');
 const { decodeToken } = require('../Auth/index');
 
+/**
+ * A function extracting from database and returning all users
+ * It was not required by the task
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ */
 const findAll = async (req, res, next) => {
   try {
     const users = await UserService.findAll();
@@ -20,6 +27,13 @@ const findAll = async (req, res, next) => {
   }
 };
 
+/**
+ * A function creating and storing a user
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ * @throws ValidationError
+ */
 const create = async (req, res, next) => {
   const createProfile = (data) => {
     const id = data.email ? data.email : data.phone;
@@ -35,25 +49,25 @@ const create = async (req, res, next) => {
     }
 
     const user = await UserService.create(createProfile(req.body));
+    req.body = { id: user.id, password: user.password };
 
-    return res.status(200).json({ data: user });
+    next();
   } catch (error) {
     if (error instanceof ValidationError) {
-      return res.status(422).json({
-        message: error.name,
-        details: error.message,
-      });
+      return res.status(422).json({ message: error.name, details: error.message });
     }
-
-    res.status(500).json({
-      message: error.name,
-      details: error.message,
-    });
+    res.status(500).json({ message: error.name, details: error.message });
 
     return next(error);
   }
 };
 
+/**
+ * A function getting info from the token's payload
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ */
 const getInfo = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;

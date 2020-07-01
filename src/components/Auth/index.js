@@ -5,11 +5,27 @@ const AuthValidator = require('./AuthValidator');
 const ValidationError = require('../../errors/ValidationError');
 const AuthenticacionError = require('../../errors/AuthenticationError');
 
+/**
+ * Generates authentication token
+ * @param {Object} payload contains incapsulated into the token useful information
+ */
 const generateToken = (payload) => jwt.sign(payload, process.env.TOKEN_SECRET,
   { expiresIn: process.env.TOKEN_EXPIRES_IN });
 
+/**
+ * Extracts payload from the token
+ * @param {String} token authentication token
+ */
 const decodeToken = (token) => jwt.verify(token, process.env.TOKEN_SECRET);
 
+/**
+ * A function managing user signing in
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ * @returns {Promise}
+ * @throws AuthenticationError and ValidationError
+ */
 const signIn = async (req, res, next) => {
   try {
     const { error } = AuthValidator.signIn(req.body);
@@ -45,6 +61,12 @@ const signIn = async (req, res, next) => {
   }
 };
 
+/**
+ * A function checking token for its existance and expiration
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ */
 const authenticateToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -69,6 +91,12 @@ const authenticateToken = async (req, res, next) => {
   }
 };
 
+/**
+ * A function creating a new token and sending it with cookies
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ */
 const refreshToken = async (req, res, next) => {
   try {
     const { user } = req.body;
@@ -86,18 +114,33 @@ const refreshToken = async (req, res, next) => {
   }
 };
 
+/**
+ * A function deleting active tokens
+ * @param req.query.all if true - all tokens of all users will be deleted
+ *                      if false - all tokens of a current user will be deleted
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ */
 const logout = async (req, res, next) => {
   try {
     const { user } = req.body;
     const target = (!req.query.all || req.query.all === 'false') ? { id: user.id } : {};
 
     await AuthService.deleteTokens(target);
-    next();
+    res.sendStatus(200);
   } catch (error) {
     next(error);
   }
 };
 
+/**
+ * A function extracting from database and returning all active tokens
+ * This function was not required by the task
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ */
 const getTokens = async (req, res, next) => {
   try {
     const tokens = await AuthService.findAll();

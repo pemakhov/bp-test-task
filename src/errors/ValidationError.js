@@ -1,3 +1,6 @@
+/**
+ * Class for instantiating user input errors
+ */
 class ValidationError extends Error {
   constructor(message) {
     super();

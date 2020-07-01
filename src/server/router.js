@@ -14,6 +14,9 @@ module.exports = {
 
     app.get('/', (req, res) => res.status(200).send('Hello BandaPixels'));
 
+    /**
+     * Not existing routs processing
+     */
     app.use((req, res) => {
       res.status(404).send(http.STATUS_CODES[404]);
     });

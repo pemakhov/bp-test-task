@@ -1,10 +1,17 @@
 const Joi = require('@hapi/joi');
 
+/**
+ * Class validating input for User component routs
+ */
 class UserValidator {
   constructor() {
     this.Joi = Joi;
   }
 
+  /**
+   * Validates input for findOne function
+   * @param {Object} data should contain 'id'
+   */
   findById(data) {
     return this.Joi.object({
       id: this.Joi.string()
@@ -14,6 +21,10 @@ class UserValidator {
       .validate(data);
   }
 
+  /**
+   * Validates /signup route
+   * @param {Object} profile
+   */
   create(profile) {
     return this.Joi.object({
       phone: this.Joi.string()

@@ -2,6 +2,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
+/**
+ * Activate configuration using .env file
+ */
 require('dotenv').config();
 
 module.exports = {

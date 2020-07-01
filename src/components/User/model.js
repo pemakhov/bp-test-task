@@ -1,6 +1,9 @@
 const { Schema } = require('mongoose');
 const connections = require('../../db/connection');
 
+/**
+ * The model for the user storage document
+ */
 const UserSchema = new Schema(
   {
     id: {
