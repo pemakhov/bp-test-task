@@ -18,8 +18,11 @@ const findTokens = (id) => AuthModel.findOne({ id });
 
 const findAll = () => AuthModel.find({}).exec();
 
+const deleteTokens = (target) => AuthModel.deleteMany(target);
+
 module.exports = {
   saveToken,
   findTokens,
   findAll,
+  deleteTokens,
 };

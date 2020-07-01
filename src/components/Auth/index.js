@@ -86,6 +86,18 @@ const refreshToken = async (req, res, next) => {
   }
 };
 
+const logout = async (req, res, next) => {
+  try {
+    const { user } = req.body;
+    const target = (!req.query.all || req.query.all === 'false') ? { id: user.id } : {};
+
+    await AuthService.deleteTokens(target);
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getTokens = async (req, res, next) => {
   try {
     const tokens = await AuthService.findAll();
@@ -100,5 +112,6 @@ module.exports = {
   signIn,
   authenticateToken,
   refreshToken,
+  logout,
   getTokens,
 };
