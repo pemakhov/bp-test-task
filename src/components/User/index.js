@@ -1,7 +1,7 @@
 const UserService = require('./service');
 const UserValidator = require('./UserValidator');
 const ValidationError = require('../../errors/ValidationError');
-const { decodeAccessToken } = require('../Auth/token');
+const { decodeToken } = require('../Auth/index');
 
 const findAll = async (req, res, next) => {
   try {
@@ -57,12 +57,12 @@ const create = async (req, res, next) => {
 const getInfo = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    const refreshToken = authHeader && authHeader.split(' ')[1];
+    const token = authHeader && authHeader.split(' ')[1];
 
-    if (!refreshToken) {
+    if (!token) {
       return res.sendStatus(401);
     }
-    const user = decodeAccessToken(refreshToken);
+    const user = decodeToken(token);
 
     res.status(200).send({ id: user.id, id_type: user.id_type });
   } catch (error) {

@@ -7,7 +7,7 @@ const AuthSchema = new Schema(
       type: String,
       required: true,
     },
-    refreshTokens: {
+    tokens: {
       type: [String],
     },
   },
